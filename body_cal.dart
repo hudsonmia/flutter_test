@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use, prefer_const_constructors, non_constant_identifier_names, camel_case_types
+
 import 'package:flutter/material.dart';
 import 'package:calculator/calculate.dart';
 
@@ -10,22 +12,24 @@ class Bodycal extends StatefulWidget {
 
 class BodycalState extends State<Bodycal> {
   static double bt_inter = 10;
-  static String num_result = "0";
+  static String num_result = "";
+  var calculator = Calculate();
 
-  void calculator_Re(){  // 실시간으로 화면에 띄울 숫자 업로드
+  void answer(){  // 실시간으로 화면에 띄울 숫자 업로드
     setState(() {
-      if (Calculate.cal_sign == 4){
-        Calculate.num = Calculate.num_fst;
-      }
-      else{
-        if (Calculate.is_snd){
-          Calculate.num = Calculate.num_fst + Calculate.cal_sign_lst.elementAt(Calculate.cal_sign) + Calculate.num_snd;
-        }
-        else{
-          Calculate.num = Calculate.num_fst + Calculate.cal_sign_lst.elementAt(Calculate.cal_sign);
-        }
-      }
-      num_result = Calculate.num;
+       num_result = calculator.calc(num_result).toString();
+    });
+  }
+
+  void add(String s){
+    setState((){
+      num_result = num_result + " "+s; 
+    });
+  }
+
+  void init(){
+    setState((){
+      num_result = ""; 
     });
   }
 
@@ -200,7 +204,7 @@ abstract class Btn extends StatelessWidget{
   final Color color;
   const Btn(this.contents, this.color, {Key? key}) : super(key: key);
 
-  void act();  //  
+  void act(BuildContext context);  //  
 
   @override
   Widget build(BuildContext context) {
@@ -214,7 +218,7 @@ abstract class Btn extends StatelessWidget{
             minimumSize: Size(
                 MediaQuery.of(context).size.width * 0.2, 0)),
         onPressed: () {
-          act();
+          act(context);
         },
         child: Text(contents,
           style: TextStyle(
@@ -230,8 +234,9 @@ abstract class Btn extends StatelessWidget{
 class Num_Btn extends Btn{
    const Num_Btn(String contents, {Key? key}) : super(contents, Colors.black, key: key);
   @override
-  void act(){
+  void act(BuildContext context){
     print(this.contents);
+    (context.findAncestorStateOfType<BodycalState>() as BodycalState).add(contents);
   }
 }
 
@@ -239,8 +244,14 @@ class Num_Btn extends Btn{
 class Op_Btn extends Btn{
   const Op_Btn(String contents, {Key? key}) : super(contents, Colors.green, key: key);
   @override
-  void act(){
+  void act(BuildContext context){
     print(this.contents);
+    var body = (context.findAncestorStateOfType<BodycalState>() as BodycalState);
+  if(contents=='='){
+      body.answer();
+  }else{
+  body.add(contents);
+  }
   }
 }
 
@@ -248,7 +259,15 @@ class Op_Btn extends Btn{
 class G_Btn extends Btn{
    const G_Btn(String contents, {Key? key}) : super(contents, Colors.black, key: key);
   @override
-  void act(){
+  void act(BuildContext context){
     print(this.contents);
+    var body = (context.findAncestorStateOfType<BodycalState>() as BodycalState);
+    if(contents=='C'){
+      body.init();
+    } else if(contents=='='){
+      body.answer();
+    } else{
+      body.add(contents);
+    }
   }
 }
