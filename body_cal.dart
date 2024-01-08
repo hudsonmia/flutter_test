@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use, prefer_const_constructors, non_constant_identifier_names, camel_case_types
+
 import 'package:flutter/material.dart';
 import 'package:calculator/calculate.dart';
 
@@ -10,22 +12,24 @@ class Bodycal extends StatefulWidget {
 
 class BodycalState extends State<Bodycal> {
   static double bt_inter = 10;
-  static String num_result = "0";
+  static String num_result = "";
+  var calculator = Calculate();
 
-  void calculator_Re(){  // 실시간으로 화면에 띄울 숫자 업로드
+  void answer(){  // 실시간으로 화면에 띄울 숫자 업로드
     setState(() {
-      if (Calculate.cal_sign == 4){
-        Calculate.num = Calculate.num_fst;
-      }
-      else{
-        if (Calculate.is_snd){
-          Calculate.num = Calculate.num_fst + Calculate.cal_sign_lst.elementAt(Calculate.cal_sign) + Calculate.num_snd;
-        }
-        else{
-          Calculate.num = Calculate.num_fst + Calculate.cal_sign_lst.elementAt(Calculate.cal_sign);
-        }
-      }
-      num_result = Calculate.num;
+       num_result = calculator.calc(num_result).toString();
+    });
+  }
+
+  void add(String s){
+    setState((){
+      num_result = num_result + " "+s; 
+    });
+  }
+
+  void init(){
+    setState((){
+      num_result = ""; 
     });
   }
 
@@ -101,110 +105,15 @@ class BodycalState extends State<Bodycal> {
                     child: Column(
                       children: [
                         SizedBox(height: bt_inter),
-                        Expanded(
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                                primary: Colors.black,
-                                backgroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                minimumSize: Size(
-                                    MediaQuery.of(context).size.width * 0.2, 0)),
-                            onPressed: () {
-                              Calculate.clear();
-                              calculator_Re();
-                            },
-                            child: Text("C",
-                              style: TextStyle(
-                                  fontSize:
-                                      MediaQuery.of(context).size.height * 0.05),
-                            ),
-                          ),
-                        ),
+                        G_Btn("C"),
                         SizedBox(height: bt_inter),
-                        Expanded(
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                                primary: Colors.black,
-                                backgroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                minimumSize: Size(
-                                    MediaQuery.of(context).size.width * 0.2, 0)),
-                            onPressed: () {
-                              Calculate.equation("7");
-                              calculator_Re();
-                              },
-                            child: Text("7",
-                              style: TextStyle(
-                                  fontSize:
-                                      MediaQuery.of(context).size.height * 0.05),
-                            ),
-                          ),
-                        ),
+                        Num_Btn("7"),
                         SizedBox(height: bt_inter),
-                        Expanded(
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                                primary: Colors.black,
-                                backgroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                minimumSize: Size(
-                                    MediaQuery.of(context).size.width * 0.2, 0)),
-                            onPressed: () {
-                              Calculate.equation("4");
-                              calculator_Re();
-                            },
-                            child: Text("4",
-                              style: TextStyle(
-                                  fontSize:
-                                      MediaQuery.of(context).size.height * 0.05),
-                            ),
-                          ),
-                        ),
+                        Num_Btn("4"),
                         SizedBox(height: bt_inter),
-                        Expanded(
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                                primary: Colors.black,
-                                backgroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                minimumSize: Size(
-                                    MediaQuery.of(context).size.width * 0.2, 0)),
-                            onPressed: () {
-                              Calculate.equation("1");
-                              calculator_Re();
-                            },
-                            child: Text("1",
-                              style: TextStyle(
-                                  fontSize:
-                                      MediaQuery.of(context).size.height * 0.05),
-                            ),
-                          ),
-                        ),
+                        Num_Btn("1"),
                         SizedBox(height: bt_inter),
-                        Expanded(
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                                primary: Colors.black,
-                                backgroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                minimumSize: Size(
-                                    MediaQuery.of(context).size.width * 0.2, 0)),
-                            onPressed: () {
-                              Calculate.plmi();
-                              calculator_Re();
-                            },
-                            child: Text("+/-",
-                              style: TextStyle(
-                                  fontSize:
-                                      MediaQuery.of(context).size.height * 0.05),
-                            ),
-                          ),
-                        ),
+                        G_Btn("+/-"),
                         SizedBox(height: bt_inter),
                       ],
                     ),
@@ -219,107 +128,15 @@ class BodycalState extends State<Bodycal> {
                     child: Column(
                       children: [
                         SizedBox(height: bt_inter),
-                        Expanded(
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                                primary: Color.fromARGB(255, 1, 165, 56),
-                                backgroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                minimumSize: Size(
-                                    MediaQuery.of(context).size.width * 0.2, 0)),
-                            onPressed: () {},
-                            child: Text("()",
-                              style: TextStyle(
-                                  fontSize:
-                                      MediaQuery.of(context).size.height * 0.05),
-                            ),
-                          ),
-                        ),
+                        Op_Btn("()"),
                         SizedBox(height: bt_inter),
-                        Expanded(
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                                primary: Colors.black,
-                                backgroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                minimumSize: Size(
-                                    MediaQuery.of(context).size.width * 0.2, 0)),
-                            onPressed: () {
-                              Calculate.equation("8");
-                              calculator_Re();
-                              },
-                            child: Text("8",
-                              style: TextStyle(
-                                  fontSize:
-                                      MediaQuery.of(context).size.height * 0.05),
-                            ),
-                          ),
-                        ),
+                        Num_Btn("8"),
                         SizedBox(height: bt_inter),
-                        Expanded(
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                                primary: Colors.black,
-                                backgroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                minimumSize: Size(
-                                    MediaQuery.of(context).size.width * 0.2, 0)),
-                            onPressed: () {
-                              Calculate.equation("5");
-                              calculator_Re();
-                            },
-                            child: Text("5",
-                              style: TextStyle(
-                                  fontSize:
-                                      MediaQuery.of(context).size.height * 0.05),
-                            ),
-                          ),
-                        ),
+                        Num_Btn("5"),
                         SizedBox(height: bt_inter),
-                        Expanded(
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                                primary: Colors.black,
-                                backgroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                minimumSize: Size(
-                                    MediaQuery.of(context).size.width * 0.2, 0)),
-                            onPressed: () {
-                              Calculate.equation("2");
-                              calculator_Re();
-                            },
-                            child: Text("2",
-                              style: TextStyle(
-                                  fontSize:
-                                      MediaQuery.of(context).size.height * 0.05),
-                            ),
-                          ),
-                        ),
+                        Num_Btn("2"),
                         SizedBox(height: bt_inter),
-                        Expanded(
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                                primary: Colors.black,
-                                backgroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                minimumSize: Size(
-                                    MediaQuery.of(context).size.width * 0.2, 0)),
-                            onPressed: () {
-                              Calculate.equation("0");
-                              calculator_Re();
-                            },
-                            child: Text("0",
-                              style: TextStyle(
-                                  fontSize:
-                                      MediaQuery.of(context).size.height * 0.05),
-                            ),
-                          ),
-                        ),
+                        Num_Btn("0"),
                         SizedBox(height: bt_inter),
                       ],
                     ),
@@ -334,110 +151,15 @@ class BodycalState extends State<Bodycal> {
                     child: Column(
                       children: [
                         SizedBox(height: bt_inter),
-                        Expanded(
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                                primary: Color.fromARGB(255, 1, 165, 56),
-                                backgroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                minimumSize: Size(
-                                    MediaQuery.of(context).size.width * 0.2, 0)),
-                            onPressed: () {
-                              Calculate.make_percent();
-                              calculator_Re();
-                            },
-                            child: Text("%",
-                              style: TextStyle(
-                                  fontSize:
-                                      MediaQuery.of(context).size.height * 0.05),
-                            ),
-                          ),
-                        ),
+                        Op_Btn("%"),
                         SizedBox(height: bt_inter),
-                        Expanded(
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                                primary: Colors.black,
-                                backgroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                minimumSize: Size(
-                                    MediaQuery.of(context).size.width * 0.2, 0)),
-                            onPressed: () {
-                              Calculate.equation("9");
-                              calculator_Re();
-                              },
-                            child: Text("9",
-                              style: TextStyle(
-                                  fontSize:
-                                      MediaQuery.of(context).size.height * 0.05),
-                            ),
-                          ),
-                        ),
+                        Num_Btn("9"),
                         SizedBox(height: bt_inter),
-                        Expanded(
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                                primary: Colors.black,
-                                backgroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                minimumSize: Size(
-                                    MediaQuery.of(context).size.width * 0.2, 0)),
-                            onPressed: () {
-                              Calculate.equation("6");
-                              calculator_Re();
-                            },
-                            child: Text("6",
-                              style: TextStyle(
-                                  fontSize:
-                                      MediaQuery.of(context).size.height * 0.05),
-                            ),
-                          ),
-                        ),
+                        Num_Btn("6"),
                         SizedBox(height: bt_inter),
-                        Expanded(
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                                primary: Colors.black,
-                                backgroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                minimumSize: Size(
-                                    MediaQuery.of(context).size.width * 0.2, 0)),
-                            onPressed: () {
-                              Calculate.equation("3");
-                              calculator_Re();
-                            },
-                            child: Text("3",
-                              style: TextStyle(
-                                  fontSize:
-                                      MediaQuery.of(context).size.height * 0.05),
-                            ),
-                          ),
-                        ),
+                        Num_Btn("3"),
                         SizedBox(height: bt_inter),
-                        Expanded(
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                                primary: Colors.black,
-                                backgroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                minimumSize: Size(
-                                    MediaQuery.of(context).size.width * 0.2, 0)),
-                            onPressed: () {
-                              Calculate.make_decimal();
-                              calculator_Re();
-                            },
-                            child: Text(".",
-                              style: TextStyle(
-                                  fontSize:
-                                      MediaQuery.of(context).size.height * 0.05),
-                            ),
-                          ),
-                        ),
+                        G_Btn("."),
                         SizedBox(height: bt_inter),
                       ],
                     ),
@@ -452,104 +174,15 @@ class BodycalState extends State<Bodycal> {
                     child: Column(
                       children: [
                         SizedBox(height: bt_inter),
-                        Expanded(
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                                primary: Color.fromARGB(255, 1, 165, 56),
-                                backgroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                minimumSize: Size(
-                                    MediaQuery.of(context).size.width * 0.2, 0)),
-                            onPressed: () {
-                              Calculate.sign("÷");
-                              calculator_Re();
-                            },
-                            child: Text("÷",
-                            style: TextStyle(fontSize: MediaQuery.of(context).size.height*0.05),
-                            ),
-                          ),
-                        ),
+                        Op_Btn("÷"),
                         SizedBox(height: bt_inter),
-                        Expanded(
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                              primary: Color.fromARGB(255, 1, 165, 56),
-                              backgroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)
-                              ),
-                              minimumSize: Size(MediaQuery.of(context).size.width*0.2, 0)
-                            ),
-                            onPressed: () {
-                              Calculate.sign("×");
-                              calculator_Re();
-                            },
-                            child: Text("×",
-                            style: TextStyle(fontSize: MediaQuery.of(context).size.height*0.05),
-                            ),
-                          ),
-                        ),
+                        Op_Btn("×"),
                         SizedBox(height: bt_inter),
-                        Expanded(
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                              primary: Color.fromARGB(255, 1, 165, 56),
-                              backgroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)
-                              ),
-                              minimumSize: Size(MediaQuery.of(context).size.width*0.2, 0)
-                            ),
-                            onPressed: () {
-                              Calculate.sign("-");
-                              calculator_Re();
-                            },
-                            child: Text("-",
-                            style: TextStyle(fontSize: MediaQuery.of(context).size.height*0.05),
-                            ),
-                          ),
-                        ),
+                        Op_Btn("-"),
                         SizedBox(height: bt_inter),
-                        Expanded(
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                              primary: Color.fromARGB(255, 1, 165, 56),
-                              backgroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)
-                              ),
-                              minimumSize: Size(MediaQuery.of(context).size.width*0.2, 0)
-                            ),
-                            onPressed: () {
-                              Calculate.sign("+");
-                              calculator_Re();
-                            },
-                            child: Text("+",
-                            style: TextStyle(fontSize: MediaQuery.of(context).size.height*0.05),
-                            ),
-                          ),
-                        ),
+                        Op_Btn("+"),
                         SizedBox(height: bt_inter),
-                        Expanded(
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                              primary: Colors.white,
-                              backgroundColor: Color.fromARGB(255, 1, 165, 56),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)
-                              ),
-                              minimumSize: Size(MediaQuery.of(context).size.width*0.2, 0)
-                            ),
-                            onPressed: () {
-                              Calculate.equ_result();
-                              calculator_Re();
-                            },
-                            child: Text("=",
-                            style: TextStyle(fontSize: MediaQuery.of(context).size.height*0.05),
-                            ),
-                          ),
-                        ),
+                        Op_Btn("="),
                         SizedBox(height: bt_inter),
                       ],
                     ),
@@ -561,5 +194,80 @@ class BodycalState extends State<Bodycal> {
         ),
       ],
     );
+  }
+}
+
+
+// Calculator Abstract Btn
+abstract class Btn extends StatelessWidget{
+  final String contents;
+  final Color color;
+  const Btn(this.contents, this.color, {Key? key}) : super(key: key);
+
+  void act(BuildContext context);  //  
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: TextButton(
+        style: TextButton.styleFrom(
+            primary: color,
+            backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+            minimumSize: Size(
+                MediaQuery.of(context).size.width * 0.2, 0)),
+        onPressed: () {
+          act(context);
+        },
+        child: Text(contents,
+          style: TextStyle(
+              fontSize:
+                  MediaQuery.of(context).size.height * 0.05),
+        ),
+      ),
+    );
+  }
+}
+
+// 0-9 decimal btn
+class Num_Btn extends Btn{
+   const Num_Btn(String contents, {Key? key}) : super(contents, Colors.black, key: key);
+  @override
+  void act(BuildContext context){
+    print(this.contents);
+    (context.findAncestorStateOfType<BodycalState>() as BodycalState).add(contents);
+  }
+}
+
+// operation btn
+class Op_Btn extends Btn{
+  const Op_Btn(String contents, {Key? key}) : super(contents, Colors.green, key: key);
+  @override
+  void act(BuildContext context){
+    print(this.contents);
+    var body = (context.findAncestorStateOfType<BodycalState>() as BodycalState);
+  if(contents=='='){
+      body.answer();
+  }else{
+  body.add(contents);
+  }
+  }
+}
+
+// general purpose btn
+class G_Btn extends Btn{
+   const G_Btn(String contents, {Key? key}) : super(contents, Colors.black, key: key);
+  @override
+  void act(BuildContext context){
+    print(this.contents);
+    var body = (context.findAncestorStateOfType<BodycalState>() as BodycalState);
+    if(contents=='C'){
+      body.init();
+    } else if(contents=='='){
+      body.answer();
+    } else{
+      body.add(contents);
+    }
   }
 }

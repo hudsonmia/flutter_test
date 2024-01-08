@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        splashColor: Colors.transparent,
+        splashColor: const Color.fromARGB(0, 185, 42, 42),
         highlightColor: Colors.transparent,
       ),
       home: const Scaffold(
